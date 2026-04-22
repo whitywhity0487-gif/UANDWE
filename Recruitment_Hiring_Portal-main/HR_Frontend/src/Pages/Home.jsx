@@ -108,21 +108,24 @@ const handleLocationClick = (clickedIndex) => {
     card.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
- const handleCardClick = (title) => {
+const handleCardClick = (title) => {
   if (title === "Recruitment") {
-    // Get user from localStorage
     const user = JSON.parse(localStorage.getItem("user"));
     const userRole = user?.role;
-    
-    // If user is Interviewer, navigate to Demand page
+
     if (userRole === "Interviewer") {
       navigate("/demand");
     } else {
-      // For Admin and Recruiter, navigate to Recruitment page
       navigate("/recruitment");
     }
+
+  } else if (title === "Holiday Calendar") {
+    navigate("/holiday");
+
+  } else if (title === "My Personal Details") {  // ✅ ADD THIS CASE
+    navigate("/mypersonaldetails");
+
   } else {
-    // Show development message for other cards
     setDevelopmentMessage(`UANDWE Knowledge Base: "${title}" is under development`);
     setShowDevelopmentMessage(true);
     setTimeout(() => {

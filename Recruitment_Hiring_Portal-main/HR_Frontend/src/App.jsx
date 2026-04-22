@@ -7,6 +7,9 @@ import Demand from "./Pages/Demand";
 import Recruiter from "./Pages/Recruiter";
 import CreateUser from "./Pages/CreateUser";
 import R_home from "./Pages/R_home.jsx";
+import Holiday from "./Pages/Details/Holiday";
+import Mypersonaldetails from "./Pages/Details/Mypersonaldetails.jsx";
+
 
 // Protected Route component
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -85,7 +88,14 @@ function App() {
       
       {/* Catch all - redirect to home if authenticated, otherwise login */}
       <Route path="*" element={<Navigate to="/" replace />} />
+
+          <Route path="/holiday" element={<Holiday />} />
+          <Route path="/mypersonaldetails" element={<Mypersonaldetails />} />
+
+
+
     </Routes>
+
   );
 }
 
