@@ -35,7 +35,7 @@ const Mypersonaldetails = () => {
     hr: ""
   });
 
-  const API_BASE_URL = "http://localhost:5000/api/personal-details";
+  const API_BASE_URL = "https://uandwe-tau.vercel.app/api/personal-details";
 
   const getTodayDate = () => {
     const today = new Date();
