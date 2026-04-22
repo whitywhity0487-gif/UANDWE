@@ -11,7 +11,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://myuandwe.vercel.app"
+  "https://myuandwe5.vercel.app"
 ];
 
 app.use((req, res, next) => {
@@ -70,7 +70,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:5000"
+        url: "https://uandwe-tau.vercel.app"
       }
     ]
   },
@@ -104,11 +104,5 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Personal details API available at: http://localhost:${PORT}/api/personal-details`);
-});
 
 module.exports = app;
