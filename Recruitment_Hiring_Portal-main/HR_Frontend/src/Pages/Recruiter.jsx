@@ -738,58 +738,47 @@ const Recruiter = ({ user }) => {
       applyFiltersFromUrl();
     }
   }, [location.search, candidates.length]); // Re-run when URL changes or candidates load
-  const fetchSkillsData = async () => {
-    try {
-      setSkillsLoading(true);
-      const response = await axios.get('https://uandwe-tau.vercel.app/api/skillsmatch/skills');
-      console.log("Skills API response:", response.data);
+ const fetchSkillsData = async () => {
+  try {
+    setSkillsLoading(true);
+    const response = await axios.get('https://uandwe-tau.vercel.app/api/skillsmatch/skills');
+    console.log("Skills API response:", response.data);
 
-      if (response.data.success && response.data.data) {
-        let skillsList = response.data.data;
-        console.log(`Fetched ${skillsList.length} skills from API:`, skillsList);
+    if (response.data.success && response.data.data) {
+      let skillsList = response.data.data;
+      console.log(`Fetched ${skillsList.length} skills from API:`, skillsList);
 
-        // Sort skills by count in descending order (highest first)
-        skillsList.sort((a, b) => {
-          // First sort by count (descending)
-          if (b.count !== a.count) {
-            return b.count - a.count;
-          }
-          // If counts are equal, sort alphabetically
-          return a.name.localeCompare(b.name);
-        });
+      // ❌ REMOVE THIS SORTING BLOCK - backend already sorts alphabetically
+      // skillsList.sort((a, b) => {
+      //   if (b.count !== a.count) {
+      //     return b.count - a.count;
+      //   }
+      //   return a.name.localeCompare(b.name);
+      // });
 
-        console.log("Sorted skills by count:", skillsList);
+      setSkills(skillsList);  // Use as-is from backend
+      setTotalSkills(response.data.totalSkills || skillsList.length);
 
-        setSkills(skillsList);
-        setTotalSkills(response.data.totalSkills || skillsList.length);
+      const countsFromApi = {};
+      skillsList.forEach(skill => {
+        countsFromApi[skill.name] = skill.count || 0;
+      });
 
-        const countsFromApi = {};
-        skillsList.forEach(skill => {
-          countsFromApi[skill.name] = skill.count || 0;
-        });
+      setSkillCounts(countsFromApi);
 
-        setSkillCounts(countsFromApi);
-
-        const allSkills = skillsList.map(item => item.name);
-        setSkillSuggestions(allSkills.sort()); // Keep suggestions alphabetically
-
-      } else {
-        console.log("Skills API returned no data");
-        setSkills([]);
-        setTotalSkills(0);
-        setSkillSuggestions([]);
-        setSkillCounts({});
-      }
-    } catch (err) {
-      console.error('Error fetching skills data:', err);
-      setSkills([]);
-      setTotalSkills(0);
-      setSkillSuggestions([]);
-      setSkillCounts({});
-    } finally {
-      setSkillsLoading(false);
+      const allSkills = skillsList.map(item => item.name);
+      setSkillSuggestions(allSkills); // Already sorted from backend
     }
-  };
+  } catch (err) {
+    console.error('Error fetching skills data:', err);
+    setSkills([]);
+    setTotalSkills(0);
+    setSkillSuggestions([]);
+    setSkillCounts({});
+  } finally {
+    setSkillsLoading(false);
+  }
+};
   useEffect(() => {
     const autoFilterFromDemand = async () => {
       // Check if we should auto-apply filters
